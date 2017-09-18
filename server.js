@@ -47,8 +47,8 @@ db.once('open', function() {
 });
 
 // Comment and Article models
-var comment = require('./models/Comment.js');
-var article = require('./models/Article.js');
+var Comment = require('./models/Comment.js');
+var Article = require('./models/Article.js');
 // ---------------------------------------------------------------------------------------------------------------
 
 

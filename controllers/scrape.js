@@ -6,8 +6,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 
-var Comment = require('./models/Comment.js');
-var Article = require('./models/Article.js');
+var Comment = require('models/Comment.js');
+var Article = require('models/Article.js');
 
 // Main Page
 router.get('/', function (req, res){
