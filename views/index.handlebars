@@ -1,0 +1,98 @@
+{{#each articles}}
+  <ul class="collapsible" data-collapsible="accordion">
+
+    <!-- Articles -->
+    <li>
+      <div style="background-color: white;" class="collapsible-header grey lighten-2">
+        <i class="material-icons">language</i> <b>{{updated}}</b>
+        <div style="clear: left; line-height: 110%; padding-bottom: 10px;"><b>{{title}}</b></div>
+      </div>
+      <div class="collapsible-body" style="background-color: white;">
+        <p>
+          {{summary}}
+
+          <br><br>
+
+          <i>Please read the full article <a href="{{link}}" target="_new">here</a>.</i>
+        </p>
+
+      </div>
+    </li>
+
+
+    <!--Comments -->
+    <li>
+      <div class="collapsible-header"><i class="material-icons">comment</i>Add a Comment</div>
+      <div class="collapsible-body" style="background-color: white;">
+
+        <form id="form-add-{{_id}}" action="add/comment/{{_id}}" method="post" style="background-color: white;">
+
+          <!-- Author Input -->
+          <div class="row">
+            <div class="input-field col s2"></div>
+            <div class="input-field col s8">
+              <input id="author_name" name="name" type="text" class="validate">
+              <label for="author_name">Author Name:</label>
+            </div>
+          </div>
+
+          <!-- Comments-->
+          <div class="row">
+            <div class="input-field col s2"></div>
+            <div class="input-field col s8">
+              <textarea id="comment_box" name="comment" class="materialize-textarea"></textarea>
+              <label for="comment_box">Comments:</label>
+            </div>
+          </div>
+
+            <!-- Submit Button -->
+            <div class="row">
+              <div class="input-field col s2"></div>
+              <div class="input-field col s8">
+              <center><input class="btn add-comment-button" data-id="{{_id}}" type="submit" value="Submit"></center>
+              </div>
+            </div>
+        </form>
+      </div>
+    </li>
+
+
+    <!-- View Comments -->
+    <li>
+      <div class="collapsible-header"><i class="material-icons">thumbs_up_down</i>View Comments</div>
+      <div class="collapsible-body" style="background-color: white;">
+
+
+        {{#if comments}}
+
+
+          <ul class="collection">
+            {{#each comments}}
+
+              <li class="collection-item">
+                <b>{{author}}</b>
+
+                <span class="badge">
+                  <form id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
+                    <input class="btn-small delete-comment-button" data-id="{{_id}}" type="submit" value="Delete" style="color: white; background-color: red; border-color: red;">
+                  </form>
+                </span>
+
+                <br>
+
+                {{content}}
+
+              </li>
+            {{/each}}
+          </ul>
+
+        {{else}}
+          <p>No Comments Yet :( </p>
+        {{/if}}
+
+
+      </div>
+    </li>
+
+  </ul>
+{{/each}}

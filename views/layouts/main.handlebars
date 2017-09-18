@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>WaPo Top Headline Scraper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Materialize - Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <!-- Materialize - Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="public/style/style.css">
+  </head>
+
+  <body>
+
+    <!-- Fixed Nav Bar -->
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper grey darken-3">
+          <a href="/" class="brand-logo"><i class="material-icons">loop</i> WaPo Article Scraper</a>
+          <a href="" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="http://www.thewashingtonpost.com/" target="_new">The Washington Post</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- For Mobile Nav Bar -->
+    <ul class="side-nav darken-3" id="mobile-demo">
+      <li><a href="http://www.thewashingtonpost.com/" target="_new">The Washington Post</a></li>
+    </ul>
+
+
+    <!-- Main Page-->
+    <main>
+
+      <!-- Site Info Container -->
+      <div class="container">
+        <ul class="collection with-header">
+          <li class="collection-header grey lighten-2"><h4><b>See a listing of current headlines from The WashingtonPost</b></h4></li>
+          <li class="collection-item">Below is a list of top headlines that have been scraped from The Washington Post site.</li>
+          <li class="collection-item"><div>Click <i class="material-icons">loop</i> in the navbar to re-scrape data.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">language</i> to view an article.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">comment</i> to add a comment.</div></li>
+          <li class="collection-item"><div>Click <i class="material-icons">thumbs_up_down</i> to read comments.</div></li>
+        </ul>
+      </div>
+
+
+
+      <div class="container">
+        {{{body}}}
+      </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="page-footer grey darken-3">
+      <div class="footer-copyright">
+        <div class="container">
+        2017 MongoWaspScraper - article data was web scraped from
+        <a class="grey-text text-lighten-4" href="http://www.thewashingtonpost.com/">www.thewashingtonpost.com</a>
+        </div>
+      </div>
+    </footer>
+
+
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <!-- Materialize - Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <!-- Basic Page JavaScript for Repsonsiveness -->
+    <script type="text/javascript" src="public/javascript/app.js"></script>
+
+  </body>
+
+</html>
