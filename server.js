@@ -46,7 +46,7 @@ db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
-Comment and Article models
+// Comment and Article models
 var comment = require('./models/Comment.js');
 var article = require('./models/Article.js');
 // ---------------------------------------------------------------------------------------------------------------
