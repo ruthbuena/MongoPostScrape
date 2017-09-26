@@ -70,17 +70,14 @@ router.get('/scrape', function(req, res) {
               }
             });
         }
-
         else{
-          console.log('Redundant Onion Content. Not Saved to DB.')
+          console.log('Redundant Article.')
         }
-
       }
       else{
-        console.log('Empty Content. Not Saved to DB.')
+        console.log('Empty Content.')
       }
     });
-
     res.redirect("/articles");
   });
 });
@@ -88,11 +85,9 @@ router.get('/scrape', function(req, res) {
 
 router.post('/add/comment/:id', function (req, res){
 
-
   var articleId = req.params.id;
   var commentAuthor = req.body.name;
   var commentContent = req.body.comment;
-
 
   var result = {
     author: commentAuthor,
@@ -121,12 +116,9 @@ router.post('/add/comment/:id', function (req, res){
 });
 
 
-
-
 router.post('/remove/comment/:id', function (req, res){
   var commentId = req.params.id;
   Comment.findByIdAndRemove(commentId, function (err, todo) {
-
     if (err) {
       console.log(err);
     }
@@ -135,6 +127,5 @@ router.post('/remove/comment/:id', function (req, res){
     }
   });
 });
-
 
 module.exports = router;
