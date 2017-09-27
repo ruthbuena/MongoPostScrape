@@ -25,10 +25,10 @@ app.set('view engine', 'handlebars');
 // Database with Mongoose
 
 if(process.env.NODE_ENV == 'production'){
-  mongoose.connect('mongodb:mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7');
+  mongoose.createConnection('mongodb:mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7');
 }
 else{
-  mongoose.connect('mongodb://localhost/news-scraper');
+  mongoose.createConnection('mongodb://localhost/news-scraper');
 }
 
 var db = mongoose.connection;
@@ -39,7 +39,7 @@ db.on('error', function(err) {
 });
 
 
-db.once('open', function() {
+db.once('openUri', function() {
   console.log('Mongoose connection successful.');
 });
 

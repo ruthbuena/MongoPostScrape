@@ -3,7 +3,13 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
 
+.navbar-fixed {
 /*Background Image*/
-  background-image: url('./images/wapo.jpg');
+  background-image: url('../images/wapo.jpg');
+}
+
+main {
+  flex: 1 0 auto;
 }

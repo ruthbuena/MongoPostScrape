@@ -42,10 +42,8 @@ router.get('/scrape', function(req, res) {
 
         var result = {};
 
-        // result.title = $(this).children('header').children('h2').text().trim() + "";
-        // result.link = 'http://www.thewashingtonpost.com' + $(this).children('header').children('h2').children('a').attr('href').trim();
-        result.title = $(element).text();
-        result.link = $(element).attr("href");
+        result.title = $(this).children('header').children('h2').text().trim() + "";
+        result.link = 'http://www.thewashingtonpost.com' + $(this).children('header').children('h2').children('a').attr('href').trim();
         result.summary = $(this).children('div').text().trim() + "";
 
         if(result.title !== "" &&  result.summary !== ""){
