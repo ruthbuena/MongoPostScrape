@@ -1,17 +1,15 @@
-// Node Dependencies
+//Dependencies
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var logger = require('morgan');
-var request = require('request'); // for web-scraping
-var cheerio = require('cheerio'); // for web-scraping
+var request = require('request');
+var cheerio = require('cheerio');
 
 
-// Initialize Express for debugging & body parsing
+// Initialize Express
 var app = express();
-app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
   extended: false
 }))
@@ -24,9 +22,8 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 
-// Database Configuration with Mongoose
-// ---------------------------------------------------------------------------------------------------------------
-// Connect to localhost if not a production environment
+// Database with Mongoose
+
 if(process.env.NODE_ENV == 'production'){
   mongoose.connect('mongodb:mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7');
 }

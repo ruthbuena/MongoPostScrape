@@ -38,7 +38,7 @@ router.get('/scrape', function(req, res) {
     var titlesArray = [];
 
     // Now, grab every everything with a class of "inner" with each "article" tag
-    $("div.story-headline h3 a").each(function(i, element) {
+    $("story-headline h3").each(function(i, element) {
 
         var result = {};
 
