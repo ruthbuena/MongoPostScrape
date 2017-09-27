@@ -33,17 +33,19 @@ router.get('/articles', function (req, res){
 
 //Scrape
 router.get('/scrape', function(req, res) {
-  request('http://www.thewashingtonpost.com/', function(error, response, html) {
+  request('http://www.thewashingtonpost.com/local', function(error, response, html) {
     var $ = cheerio.load(html);
     var titlesArray = [];
 
     // Now, grab every everything with a class of "inner" with each "article" tag
-    $('article .inner').each(function(i, element) {
+    $("div.story-headline h3 a").each(function(i, element) {
 
         var result = {};
 
-        result.title = $(this).children('header').children('h2').text().trim() + "";
-        result.link = 'http://www.thewashingtonpost.com' + $(this).children('header').children('h2').children('a').attr('href').trim();
+        // result.title = $(this).children('header').children('h2').text().trim() + "";
+        // result.link = 'http://www.thewashingtonpost.com' + $(this).children('header').children('h2').children('a').attr('href').trim();
+        result.title = $(element).text();
+        result.link = $(element).attr("href");
         result.summary = $(this).children('div').text().trim() + "";
 
         if(result.title !== "" &&  result.summary !== ""){
