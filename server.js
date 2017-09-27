@@ -23,6 +23,7 @@ app.set('view engine', 'handlebars');
 
 
 // Database with Mongoose
+mongoose.Promise = global.Promise;
 
 if(process.env.NODE_ENV == 'production'){
   mongoose.createConnection('mongodb:mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7');
