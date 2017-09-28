@@ -4,12 +4,20 @@ var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+var Comment = require('./models/Comment.js');
+var Article = require('./models/Article.js');
+
 var request = require('request');
 var cheerio = require('cheerio');
 
+// Add for Mongoose Promise
+mongoose.Promise = Promise;
+
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
+
 app.use(bodyParser.urlencoded({
   extended: false
 }))
@@ -22,17 +30,15 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 
+var router = require('./controllers/scrape.js');
+app.use('/', router);
+
 // Database with Mongoose
-mongoose.Promise = global.Promise;
 
-if(process.env.NODE_ENV == 'production'){
-  mongoose.createConnection('mongodb:mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7');
-}
-else{
-  mongoose.createConnection('mongodb://localhost/news-scraper');
-}
+var db = mongoose.connect('mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7', {useMongoClient: true});
 
-var db = mongoose.connection;
+
+// var db = mongoose.connection;
 
 
 db.on('error', function(err) {
@@ -40,22 +46,13 @@ db.on('error', function(err) {
 });
 
 
-db.once('openUri', function() {
+db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
-// Comment and Article models
-var Comment = require('./models/Comment.js');
-var Article = require('./models/Article.js');
-// ---------------------------------------------------------------------------------------------------------------
-
-
-var router = require('./controllers/scrape.js');
-app.use('/', router);
-
 
 // Launch App
-var port = process.env.PORT || 3000;
-app.listen(port, function(){
-  console.log('Running on port: ' + port);
+
+app.listen(PORT, function(){
+  console.log('Running on port: ' + PORT);
 });

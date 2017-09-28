@@ -4,19 +4,23 @@ var router = express.Router();
 var path = require('path');
 var request = require('request');
 var cheerio = require('cheerio');
+var mongoose = require("mongoose");
 
+mongoose.Promise = Promise;
 
 var Comment = require('../models/Comment.js');
 var Article = require('../models/Article.js');
 
+
+
 // Main Page
 router.get('/', function (req, res){
-  res.redirect('/scrape');
+  res.render("index");
 });
 
 
 // Articles Page Render
-router.get('/articles', function (req, res){
+router.get('/savedarticles', function (req, res){
   Article.find().sort({_id: -1})
     .populate('comments')
     .exec(function(err, doc){
@@ -25,13 +29,13 @@ router.get('/articles', function (req, res){
       }
       else {
         var hbsObject = {articles: doc}
-        res.render('index', hbsObject);
+        res.render('savedarticles', hbsObject);
       }
     });
 });
 
 
-//Scrape
+// Scrape
 router.get('/scrape', function(req, res) {
   request('http://www.thewashingtonpost.com/local', function(error, response, html) {
     var $ = cheerio.load(html);
@@ -83,49 +87,146 @@ router.get('/scrape', function(req, res) {
 });
 
 
-router.post('/add/comment/:id', function (req, res){
 
-  var articleId = req.params.id;
-  var commentAuthor = req.body.name;
-  var commentContent = req.body.comment;
+router.post("/save", function(req, res) {
+  console.log("This is the title: " + req.body.title);
 
-  var result = {
-    author: commentAuthor,
-    content: commentContent
-  };
+  var newArticleObject = {};
+  newArticleObject.title = req.body.title;
+  newArticleObject.link = req.body.link;
 
+  var entry = new Article(newArticleObject);
+  console.log("We can save the article: " + entry);
 
-  var entry = new Comment (result);
-
-
+  // save entry to the db
   entry.save(function(err, doc) {
     if (err) {
       console.log(err);
     }
     else {
-      Article.findOneAndUpdate({'_id': articleId}, {$push: {'comments':doc._id}}, {new: true})
-      .exec(function(err, doc){
-        if (err){
-          console.log(err);
+      console.log(doc);
+    }
+  });
+  res.redirect("/savedarticles");
+});
+
+router.get("/delete/:id", function(req, res) {
+  console.log("ID is getting read for delete" + req.params.id);
+  console.log("Able to activate delete function.");
+
+  Article.findOneAndRemove({"_id": req.params.id}, function (err, offer) {
+    if (err) {
+      console.log("Not able to delete:" + err);
+    } else {
+      console.log("Able to delete, Yay");
+    }
+    res.redirect("/savedarticles");
+  });
+});
+
+router.get("/comments/:id", function(req, res) {
+  console.log("ID is getting read for delete" + req.params.id);
+  console.log("Able to activate delete function.");
+
+  Comment.findOneAndRemove({"_id": req.params.id}, function (err, doc) {
+    if (err) {
+      console.log("Not able to delete:" + err);
+    } else {
+      console.log("Able to delete, Yay");
+    }
+    res.send(doc);
+  });
+});
+
+//grab article by Id
+router.get("/articles/:id", function(req, res) {
+  console.log("ID is getting read" + req.params.id);
+  Article.findOne({"_id": req.params.id})
+  .populate('comments')
+  .exec(function(err, doc) {
+    if (err) {
+      console.log("Not able to find article and get comments.");
+    }
+    else {
+      console.log("We are getting article and maybe comments? " + doc);
+      res.json(doc);
+    }
+  });
+});
+
+// Create a new comment
+router.post("/articles/:id", function(req, res) {
+  // Create a new comment and pass the req.body to the entry
+  var newComment = new Comment(req.body);
+  // And save the new comment the db
+  newComment.save(function(error, doc) {
+    // Log any errors
+    if (error) {
+      console.log(error);
+    }
+    else {
+      // Use the article id to find it and then push comment
+      Article.findOneAndUpdate({ "_id": req.params.id }, {$push: {comments: doc._id}}, {new: true, upsert: true})
+
+      .populate('comments')
+      .exec(function (err, doc) {
+        if (err) {
+          console.log("Cannot find article.");
         } else {
-          res.sendStatus(200);
+          console.log("we are getting comments? " + doc.comments);
+          res.send(doc);
         }
       });
     }
   });
 });
-
-
-router.post('/remove/comment/:id', function (req, res){
-  var commentId = req.params.id;
-  Comment.findByIdAndRemove(commentId, function (err, todo) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      res.sendStatus(200);
-    }
-  });
-});
-
+// Export routes for server.js
 module.exports = router;
+
+//
+// router.post('/add/comment/:id', function (req, res){
+//
+//   var articleId = req.params.id;
+//   var commentAuthor = req.body.name;
+//   var commentContent = req.body.comment;
+//
+//   var result = {
+//     author: commentAuthor,
+//     content: commentContent
+//   };
+//
+//
+//   var entry = new Comment (result);
+//
+//
+//   entry.save(function(err, doc) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     else {
+//       Article.findOneAndUpdate({'_id': articleId}, {$push: {'comments':doc._id}}, {new: true})
+//       .exec(function(err, doc){
+//         if (err){
+//           console.log(err);
+//         } else {
+//           res.sendStatus(200);
+//         }
+//       });
+//     }
+//   });
+// });
+//
+//
+// router.post('/remove/comment/:id', function (req, res){
+//   var commentId = req.params.id;
+//   Comment.findByIdAndRemove(commentId, function (err, todo) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     else {
+//       res.sendStatus(200);
+//     }
+//   });
+// });
+//
+// module.exports = router;
