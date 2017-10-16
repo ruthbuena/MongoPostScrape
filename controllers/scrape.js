@@ -36,55 +36,67 @@ router.get('/savedarticles', function (req, res){
 
 
 // Scrape
-router.get('/scrape', function(req, res) {
-  request('http://www.thewashingtonpost.com/local', function(error, response, html) {
+router.post('/scrape', function(req, res) {
+  request('http://www.nytimes.com/', function(error, response, html) {
     var $ = cheerio.load(html);
-    var titlesArray = [];
+    var titlesArray = {};
 
     // Now, grab every everything with a class of "inner" with each "article" tag
-    $("div.story-headline").each(function(i, element) {
+    $("article h2").each(function(i, element) {
 
         var result = {};
 
-        result.title = $(this).children('header').children('h2').text().trim() + "";
-        result.link = 'http://www.thewashingtonpost.com' + $(this).children('header').children('h2').children('a').attr('href').trim();
-        result.summary = $(this).children('div').text().trim() + "";
+        result.title = $(this).children('a').text();
 
-        if(result.title !== "" &&  result.summary !== ""){
+        console.lgo("Article Title: " + result.title);
 
-          if(titlesArray.indexOf(result.title) == -1){
+        result.link = $(this).children('a').attr('href');
 
-            titlesArray.push(result.title);
-            Article.count({ title: result.title}, function (err, test){
+        titlesArray[i] = result;
 
-              if(test == 0){
-                var entry = new Article (result);
+      });
 
-                entry.save(function(err, doc) {
-                  if (err) {
-                    console.log(err);
-                  }
-                  else {
-                    console.log(doc);
-                  }
-                });
-              }
-              else{
-                console.log('Already in the database. Not saved to DB.')
-              }
-            });
-        }
-        else{
-          console.log('Redundant Article.')
-        }
-      }
-      else{
-        console.log('Empty Content.')
-      }
+      var hbsObject = {
+        articles: titlesArray
+      };
+
+
+      //   result.summary = $(this).children('div').text().trim() + "";
+      //
+      //   if(result.title !== "" &&  result.summary !== ""){
+      //
+      //     if(titlesArray.indexOf(result.title) == -1){
+      //
+      //       titlesArray.push(result.title);
+      //       Article.count({ title: result.title}, function (err, test){
+      //
+      //         if(test == 0){
+      //           var entry = new Article (result);
+      //
+      //           entry.save(function(err, doc) {
+      //             if (err) {
+      //               console.log(err);
+      //             }
+      //             else {
+      //               console.log(doc);
+      //             }
+      //           });
+      //         }
+      //         else{
+      //           console.log('Already in the database. Not saved to DB.')
+      //         }
+      //       });
+      //   }
+      //   else{
+      //     console.log('Redundant Article.')
+      //   }
+      // }
+      // else{
+      //   console.log('Empty Content.')
+      // }
     });
-    res.redirect("/articles");
+    res.render("index", hbsObject);
   });
-});
 
 
 

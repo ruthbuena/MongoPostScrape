@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
 }))
 
 // Serve Static Content
-app.use(express.static(process.cwd() + '/public'));
+app.use(express.static("public"));
 
 // Express-Handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
