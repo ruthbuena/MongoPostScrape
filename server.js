@@ -20,7 +20,7 @@ var app = express();
 
 app.use(bodyParser.urlencoded({
   extended: false
-}))
+}));
 
 // Serve Static Content
 app.use(express.static("public"));
@@ -30,13 +30,14 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 
-var router = require('./controllers/scrape.js');
-app.use('/', router);
+
+// app.use('/', router);
 
 // Database with Mongoose
 
-var db = mongoose.connect('mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7', {useMongoClient: true});
 
+mongoose.connect('mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7', {useMongoClient: true});
+var db = mongoose.connection;
 
 // var db = mongoose.connection;
 
@@ -50,6 +51,7 @@ db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
+require('./controllers/scrape.js');
 
 // Launch App
 
