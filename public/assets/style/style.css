@@ -11,7 +11,7 @@ main {
 }
 
 .jumbotron {
-  background-image: url("..images/ny.jpg");
+  background-image: url("../images/ny.jpg");
   background-position: center;
 }
 
