@@ -1,8 +1,11 @@
 // Node Dependencies
+var express = require("express");
+var router = express.Router();
+
 var request = require("request");
 var cheerio = require("cheerio");
 var express = require ("request");
-var router = express.Router();
+
 var mongoose = require ("mongoose");
 
 mongoose.Promise = Promise;
@@ -13,21 +16,21 @@ var Article = require('../models/Article.js');
 
 // Main Page
 router.get('/', function (req, res){
-  res.render('/articles');
+  res.render("index");
 });
 
 
 // Articles Page Render
-router.get('/savedarticles', function (req, res){
-  Article.find().sort({_id: -1})
-    .populate('comments')
-    .exec(function(err, doc){
-      if (err){
-        console.log(err);
+router.get("/savedarticles", function (req, res){
+  Article.find({}, function(error,doc){
+      if (error){
+        console.log(error);
       }
       else {
-        var hbsObject = {articles: doc}
-        res.render('savedarticles', hbsObject);
+        var hbsObject = {
+          articles: doc
+        };
+        res.render("savedarticles", hbsObject);
       }
     });
 });
@@ -57,46 +60,9 @@ router.post('/scrape', function(req, res) {
       var hbsObject = {
         articles: titlesArray
       };
-
-
-      //   result.summary = $(this).children('div').text().trim() + "";
-      //
-      //   if(result.title !== "" &&  result.summary !== ""){
-      //
-      //     if(titlesArray.indexOf(result.title) == -1){
-      //
-      //       titlesArray.push(result.title);
-      //       Article.count({ title: result.title}, function (err, test){
-      //
-      //         if(test == 0){
-      //           var entry = new Article (result);
-      //
-      //           entry.save(function(err, doc) {
-      //             if (err) {
-      //               console.log(err);
-      //             }
-      //             else {
-      //               console.log(doc);
-      //             }
-      //           });
-      //         }
-      //         else{
-      //           console.log('Already in the database. Not saved to DB.')
-      //         }
-      //       });
-      //   }
-      //   else{
-      //     console.log('Redundant Article.')
-      //   }
-      // }
-      // else{
-      //   console.log('Empty Content.')
-      // }
-    });
     res.render("index", hbsObject);
   });
-
-
+});
 
 router.post("/save", function(req, res) {
   console.log("This is the title: " + req.body.title);

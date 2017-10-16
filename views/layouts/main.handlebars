@@ -1,81 +1,18 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
+	<!-- Bootstrap styling-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <title>WaPo Top Headline Scraper</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--CSS using Materialize-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <!-- Materialize - Material Design Icons  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/style/style.css">
-  </head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+	<title>NYT Scraper</title>
+</head>
+	<body>
 
-  <body>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		{{{ body }}}
 
-    <!-- Fixed Nav Bar -->
-    <div class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper grey darken-3">
-          <a href="/" class="brand-logo"><i class="material-icons">pageview</i> WashingtonPost Article Scraper</a>
-          <a href="" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-          <ul class="right hide-on-med-and-down">
-            <li><a href="http://www.nytimes.com/" target="_new">The New York Times</a></li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-
-    <!-- For Mobile Nav Bar -->
-    <ul class="side-nav darken-3" id="mobile-demo">
-      <li><a href="http://www.nytimes.com" target="_new">The New York Times</a></li>
-    </ul>
-
-
-    <!-- Main Page-->
-    <main>
-
-      <!-- Site Info Container -->
-      <div class="container">
-        <ul class="collection with-header">
-          <li class="collection-header grey lighten-2"><h4><b>See what is current from The New York Times</b></h4></li>
-          <li class="collection-item">Below are current headlines scraped from The New York Times site.</li>
-          <li class="collection-item"><div>Click <i class="material-icons">pageview</i> in the navbar to re-scrape data.</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">view_headline</i> to view an article.</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">mic</i> to add a comment.</div></li>
-          <li class="collection-item"><div>Click <i class="material-icons">chat</i> to read comments.</div></li>
-        </ul>
-      </div>
-
-
-
-      <div class="container">
-        {{{body}}}
-      </div>
-
-    </main>
-
-
-    <!-- Footer -->
-    <footer class="page-footer grey darken-3">
-      <div class="footer-copyright">
-        <div class="container">
-        2017 Ruth's MongoScraper - article data was web scraped from
-        <a class="grey-text text-lighten-4" href="http://www.thewashingtonpost.com/">www.thewashingtonpost.com</a>
-        </div>
-      </div>
-    </footer>
-
-
-
-    <!-- jQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <!-- Materialize - Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-    <!-- Basic Page JavaScript for Repsonsiveness -->
-    <script type="text/javascript" src="assets/javascript/app.js"></script>
-
-  </body>
-
+	</body>
 </html>

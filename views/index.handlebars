@@ -1,98 +1,62 @@
-{{#each articles}}
-  <ul class="collapsible" data-collapsible="accordion">
+Bootstrap NavBar styling
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">NYT Article Scraper</a>
+    </div>
 
-    <!-- Articles -->
-    <li>
-      <div style="background-color: white;" class="collapsible-header grey lighten-2">
-        <i class="material-icons">language</i> <b>{{updated}}</b>
-        <div style="clear: left; line-height: 110%; padding-bottom: 10px;"><b>{{title}}</b></div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="/savedarticles">Favorites</a></li>
+      </ul>
+      <form action="/scrape" method="POST" class="navbar-form navbar-left">
+        <button type="submit" class="btn btn-default">scrape for current news</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Bootstrap - Main container -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron">
       </div>
-      <div class="collapsible-body" style="background-color: white;">
-        <p>
-          {{summary}}
-
-          <br><br>
-
-          <i>Please read the full article <a href="{{link}}" target="_new">here</a>.</i>
-        </p>
-
-      </div>
-    </li>
-
-
-    <!--Comments -->
-    <li>
-      <div class="collapsible-header"><i class="material-icons">comment</i>Add a Comment</div>
-      <div class="collapsible-body" style="background-color: white;">
-
-        <form id="form-add-{{_id}}" action="add/comment/{{_id}}" method="post" style="background-color: white;">
-
-          <!-- Author Input -->
-          <div class="row">
-            <div class="input-field col s2"></div>
-            <div class="input-field col s8">
-              <input id="author_name" name="name" type="text" class="validate">
-              <label for="author_name">Author Name:</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {{#each articles}}
+        <div class="panel panel-primary">
+          <div class="panel-heading row">
+            <div class="col-xs-9">
+              <h3 class="panel-title pull-left">{{this.title}}</h3>
+            </div>
+            <div class="col-xs-3">
+              <form action="/save" method="POST">
+                <input id="article-title" type="hidden" name="title" value="{{this.title}}">
+                <input id="article-link" type="hidden" name="link" value={{this.link}}>
+                <button type="submit" class="btn btn-default pull-right">SAVE TO FAVORITES</button>
+              </form>
             </div>
           </div>
-
-          <!-- Comments-->
           <div class="row">
-            <div class="input-field col s2"></div>
-            <div class="input-field col s8">
-              <textarea id="comment_box" name="comment" class="materialize-textarea"></textarea>
-              <label for="comment_box">Comments:</label>
-            </div>
-          </div>
-
-            <!-- Submit Button -->
-            <div class="row">
-              <div class="input-field col s2"></div>
-              <div class="input-field col s8">
-              <center><input class="btn add-comment-button" data-id="{{_id}}" type="submit" value="Submit"></center>
+            <div class="col-xs-12>">
+              <div class="panel-body">
+                <p>{{this.link}}</p>
               </div>
             </div>
-        </form>
-      </div>
-    </li>
-
-
-    <!-- View Comments -->
-    <li>
-      <div class="collapsible-header"><i class="material-icons">mic</i>View Comments</div>
-      <div class="collapsible-body" style="background-color: white;">
-
-
-        {{#if comments}}
-
-
-          <ul class="collection">
-            {{#each comments}}
-
-              <li class="collection-item">
-                <b>{{author}}</b>
-
-                <span class="badge">
-                  <form id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
-                    <input class="btn-small delete-comment-button" data-id="{{_id}}" type="submit" value="Delete" style="color: white; background-color: red; border-color: red;">
-                  </form>
-                </span>
-
-                <br>
-
-                {{content}}
-
-              </li>
-            {{/each}}
-          </ul>
-
-        {{else}}
-          <p>No Comments Yet :( </p>
-        {{/if}}
-
-
-      </div>
-    </li>
-
-  </ul>
-{{/each}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
