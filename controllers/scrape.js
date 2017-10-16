@@ -5,19 +5,20 @@ var express = require ("request");
 var router = express.Router();
 var mongoose = require ("mongoose");
 
+mongoose.Promise = Promise;
+
 var Comment = require('../models/Comment.js');
 var Article = require('../models/Article.js');
 
-module.exports = function (app) {
 
 // Main Page
-app.get('/', function (req, res){
+router.get('/', function (req, res){
   res.render('/articles');
 });
 
 
 // Articles Page Render
-app.get('/savedarticles', function (req, res){
+router.get('/savedarticles', function (req, res){
   Article.find().sort({_id: -1})
     .populate('comments')
     .exec(function(err, doc){
@@ -97,7 +98,7 @@ router.post('/scrape', function(req, res) {
 
 
 
-app.post("/save", function(req, res) {
+router.post("/save", function(req, res) {
   console.log("This is the title: " + req.body.title);
 
   var newArticleObject = {};
@@ -119,7 +120,7 @@ app.post("/save", function(req, res) {
   res.redirect("/savedarticles");
 });
 
-app.get("/delete/:id", function(req, res) {
+router.get("/delete/:id", function(req, res) {
   console.log("ID is getting read for delete" + req.params.id);
   console.log("Able to activate delete function.");
 
@@ -133,7 +134,7 @@ app.get("/delete/:id", function(req, res) {
   });
 });
 
-app.get("/comments/:id", function(req, res) {
+router.get("/comments/:id", function(req, res) {
   console.log("ID is getting read for delete" + req.params.id);
   console.log("Able to activate delete function.");
 
@@ -148,7 +149,7 @@ app.get("/comments/:id", function(req, res) {
 });
 
 //grab article by Id
-app.get("/articles/:id", function(req, res) {
+router.get("/articles/:id", function(req, res) {
   console.log("ID is getting read" + req.params.id);
   Article.findOne({"_id": req.params.id})
   .populate('comments')
@@ -164,7 +165,7 @@ app.get("/articles/:id", function(req, res) {
 });
 
 // Create a new comment
-app.post("/articles/:id", function(req, res) {
+router.post("/articles/:id", function(req, res) {
   // Create a new comment and pass the req.body to the entry
   var newComment = new Comment(req.body);
   // And save the new comment the db
@@ -189,4 +190,6 @@ app.post("/articles/:id", function(req, res) {
     }
   });
 });
-}
+
+// Export router
+module.exports = router;

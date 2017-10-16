@@ -29,17 +29,12 @@ app.use(express.static("public"));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-
-
-// app.use('/', router);
+var routes = require('./controllers/scrape.js');
 
 // Database with Mongoose
-
-
 mongoose.connect('mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7', {useMongoClient: true});
 var db = mongoose.connection;
 
-// var db = mongoose.connection;
 
 
 db.on('error', function(err) {
@@ -51,7 +46,7 @@ db.once('open', function() {
   console.log('Mongoose connection successful.');
 });
 
-require('./controllers/scrape.js');
+
 
 // Launch App
 
