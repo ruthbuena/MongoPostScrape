@@ -1,0 +1,144 @@
+<!-- for Saving Favorite articles - Navigation bar -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">NYT Article Scraper</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="/savedarticles">Favorites <span class="sr-only">(current)</span></a></li>
+      </ul>
+      <form action="/scrape" method="POST" class="navbar-form navbar-left">
+        <button type="submit" class="btn btn-default">SCRAPE CURRENT ARTICLES!</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Bootstrap - Main container -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {{#each articles}}
+        <div class="panel panel-primary">
+          <div class="panel-heading row">
+            <div class="col-xs-6">
+              <h3 class="panel-title pull-left">{{this.title}}</h3>
+            </div>
+            <div class="col-xs-3">
+              <button id="modalbutton" type="submit" class="btn btn-default pull-right" data-toggle="modal" data-id={{this.id}} data-target="#myModal">ARTICLE COMMENTS</button>
+            </div>
+            <div class="col-xs-3">
+              <form action="/delete/{{this.id}}?_method=DELETE method="POST">
+                <button type="submit" class="btn btn-default pull-right">DELETE FROM SAVED</button>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12>">
+              <div class="panel-body">
+                <p>{{this.link}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Comments <span id="articleID"></span></h4>
+      </div>
+      <div class="modal-body">
+        <div id="comments"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+<!-- Empty comments and save under specific article and append -->
+<script>
+$(document).on("click", "#modalbutton", function() {
+  $("#comments").empty();
+  var thisId = $(this).attr("data-id");
+  $("#articleID").text(thisId);
+
+  $.ajax({
+    method: "GET",
+    url: "/articles/" + thisId
+  })
+
+    .done(function(data) {
+      console.log(data);
+      $("#comments").append("<p id='actualcomments'></p>");
+      if (data.comments) {
+        $("#actualcomments").append("<ul id='commentlist'>");
+          for (var i = 0; i < data.comments.length; i++) {
+            $('#commentlist').append("<li id='" + data.comments[i]._id + "'>" + data.comments[i].body + " " +
+            "<button data-id='" + data.comments[i]._id +
+            "' id='deletecomment'>X</button></li>");
+          }
+        $('#actualcomments').append("</ul>");
+      } else {
+        $('#actualcomments').text("There aren't any comments yet.");
+      }
+      $("#comments").append("<textarea id='bodyinput' name='body'></textarea>");
+      $("#comments").append("<button data-id='" + data._id + "' id='savecomment'>Save Comment</button>");
+    });
+});
+
+// post comment to specific article by ID number
+$(document).on("click", "#savecomment", function() {
+  var thisId = $(this).attr("data-id");
+  $.ajax({
+    method: "POST",
+    url: "/articles/" + thisId,
+    data: {
+      body: $("#bodyinput").val()
+    }
+  })
+    .done(function(data) {
+      $("#commentlist").empty();
+      for (var i = 0; i < data.comments.length; i++) {
+        $("#commentlist").append("<li id='" + data.comments[i]._id + "'>" + data.comments[i].body + " " + "<button data-id='" + data.comments[i]._id +
+        "' id='deletecomment'>X</button></li>");
+      }
+    });
+  $("#bodyinput").val("");
+});
+
+//Onlick to select comment that you want deleted, get it and then remove using .remove
+$(document).on("click", "#deletecomment", function() {
+  var thisId = $(this).attr("data-id");
+  $.ajax({
+    method: "GET",
+    url: "/comments/" + thisId,
+  })
+    .done(function(data) {
+      $("#" + data._id).remove();
+    });
+});
+</script>
