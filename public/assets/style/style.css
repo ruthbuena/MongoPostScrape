@@ -20,3 +20,8 @@ main {
 .panel-primary {
   height: 125px;
 }
+
+.panel-heading.row {
+  width: 100%;
+  margin-left: 0%;
+}
