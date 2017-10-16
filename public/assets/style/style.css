@@ -5,11 +5,17 @@ body {
   flex-direction: column;
 }
 
-.navbar-fixed {
-/*Background Image*/
-  background-image: url('../images/wapo.jpg');
-}
 
 main {
   flex: 1 0 auto;
+}
+
+.jumbotron {
+  background-image: url("..images/ny.jpg");
+  background-position: center;
+}
+
+.panel-heading,
+.panel-primary {
+  height: 140px;
 }
