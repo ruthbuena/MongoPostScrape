@@ -30,6 +30,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 var routes = require('./controllers/scrape.js');
+app.use("/", routes);
 
 // Database with Mongoose
 mongoose.connect('mongodb://heroku_ql34r6h7:et0i8gh9uvluav5fpdpckrskv3@ds141474.mlab.com:41474/heroku_ql34r6h7', {useMongoClient: true});
