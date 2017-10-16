@@ -13,6 +13,8 @@ main {
 .jumbotron {
   background-image: url("../images/ny.jpg");
   background-position: center;
+  height: 300px;
+  width: 100%;
 }
 
 .panel-heading,
