@@ -13,11 +13,10 @@ main {
 .jumbotron {
   background-image: url("../images/ny.jpg");
   background-position: center;
-  height: 300px;
+  height: 200px;
   width: 100%;
 }
 
-.panel-heading,
 .panel-primary {
-  height: 140px;
+  height: 125px;
 }
