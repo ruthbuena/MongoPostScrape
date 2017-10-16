@@ -1,8 +1,9 @@
 // Node Dependencies
-
-var request = require('request');
-var cheerio = require('cheerio');
-
+var request = require("request");
+var cheerio = require("cheerio");
+var express = require ("request");
+var router = express.Router();
+var mongoose = require ("mongoose");
 
 var Comment = require('../models/Comment.js');
 var Article = require('../models/Article.js');
@@ -32,13 +33,8 @@ app.get('/savedarticles', function (req, res){
 
 
 // Scrape
-<<<<<<< HEAD
 router.post('/scrape', function(req, res) {
   request('http://www.nytimes.com/', function(error, response, html) {
-=======
-app.get('/scrape', function(req, res) {
-  request('http://www.thewashingtonpost.com/local', function(error, response, html) {
->>>>>>> e5331d7db787d76e6f60963a33f7be469fad6c07
     var $ = cheerio.load(html);
     var titlesArray = {};
 
