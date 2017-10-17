@@ -4,8 +4,7 @@
   "description": "Web application scraping top articles on the Washington Post using Mongo, Cheerio and Mongoose",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
